@@ -1,0 +1,17 @@
+{
+    "name": "classic_latop_cl/saqibplugin",
+    "description": "Login Register Plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "John Smith",
+            "email": "john@example.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload":{
+        "psr-4": {"Inc\\":"./inc"}
+    }
+}
