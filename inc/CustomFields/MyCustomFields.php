@@ -20,30 +20,87 @@ namespace Inc\CustomFields;
         * @var  array  $customFields  Defines the custom fields available
         */
         var $customFields = array(
-            array(
-                "name"          => "ticket_title_custom",
-                "title"         => "Ticket Title",
-                "description"   => "",
-                "type"          => "text",
-                "scope"         =>   array( "tickets" ),
-                "capability"    => "edit_pages"
-            ),
-            array(
-                "name"          => "short-text",
-                "title"         => "A short bit of text",
-                "description"   => "",
-                "type"          =>   "text",
-                "scope"         =>   array( "tickets" ),
-                "capability"    => "edit_posts"
-            ),
-            array(
-                "name"          => "checkbox",
-                "title"         => "Checkbox",
-                "description"   => "",
-                "type"          => "checkbox",
-                "scope"         =>   array( "tickets" ),
-                "capability"    => "manage_options"
-            )
+        array(
+            "name"          => "ticket_title_custom",
+            "title"         => "Ticket Title",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "edit_pages"
+        ),
+        array(
+            "name"          => "user_name_custom",
+            "title"         => "User Name",
+            "description"   => "",
+            "type"          =>   "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "edit_posts"
+        ),
+        array(
+            "name"          => "address_custom",
+            "title"         => "Address",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+        array(
+            "name"          => "service_custom",
+            "title"         => "Service Name",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"														
+        ),
+        array(
+            "name"          => "state_custom",
+            "title"         => "State",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+       array(
+            "name"          => "contact_custom",
+            "title"         => "Contact",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+        array(
+            "name"          => "zipcode_custom",
+            "title"         => "Zipcode",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+        array(
+            "name"          => "date_custom",
+            "title"         => "Date",
+            "description"   => "",
+            "type"          => "text",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+        array(
+            "name"          => "desc_custom",
+            "title"         => "Description",
+            "description"   => "",
+            "type"          => "textarea",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+        array(
+            "name"          => "tech_custom",
+            "title"         => "Assign Technician",
+            "description"   => "",
+            "type"          => "select",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+
         );
         /**
         * PHP 4 Compatible Constructor
@@ -134,6 +191,29 @@ namespace Inc\CustomFields;
                                             });
                                         </script>
                                     <?php }
+                                    break;
+                                }
+                                case "select": {
+                                    // Checkbox
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'" style="display:inline;"><b>' . $customField[ 'title' ] . '</b></label><br>';
+                                    echo '<select name="' . $this->prefix . $customField['name'] . '" id="' . $this->prefix . $customField['name'] . '" value="yes"';
+                                    if ( get_post_meta( $post->ID, $this->prefix . $customField['name'], true ) == "yes" )
+                                        echo ' checked="checked"';
+                                    echo '" style="width: auto;">';
+                                    ?>
+                                    <option value="">:: Select Technician ::</option>
+									        <?php
+									        $args = array(
+									            'role'    => 'pureproof-tech',
+									        );
+									        $users = get_users( $args );
+									        foreach ($users as $user) {
+								            ?>
+								            <option value="<?php echo $user->ID; ?>" <?= ( get_post_meta( $post->ID, $this->prefix . $customField['name'], true ) ==  $user->ID)? 'selected': 'not'; ?> ><?php echo $user->display_name; ?> </option>
+								            <?php
+								        }
+								        echo "</select>";
+        						
                                     break;
                                 }
                                 default: {

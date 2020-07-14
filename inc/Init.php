@@ -19,7 +19,7 @@ final class Init{
 			Pages\Admin::class,
 			Base\Enqueue::class,
 			Base\SettingsLinks::class,
-			CustomFields\MyCustomFields::class
+			CustomFields\MyCustomFields::class,
 		);
 	}
 

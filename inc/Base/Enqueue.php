@@ -16,6 +16,11 @@ class Enqueue extends BaseController{
 		        Activate::registerCustomPostType();
 		    }
 		);
+		/*add_action('init',
+		    function ( ) {
+		        Activate::registerCustomTaxonomy();
+		    }
+		);*/
 	}
 
 		function enqueue(){

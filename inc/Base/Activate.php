@@ -26,7 +26,7 @@ class Activate{
 	    $labels = array(
 	    'name'              => _x('Tickects', 'plural'),
 	    'singular_name'     => _x('Tickets', 'singular'),
-	    'menu_name'         => _x('Ticket System', 'admin menu'),
+	    'menu_name'         => _x('TicketSystem', 'TicketSystem'),
 	    'name_admin_bar'    => _x('Tickets', 'admin bar'),
 	    'view_item'         => __('View Tickets Property'),
 	    'all_items'         => __('All Tickets'),
@@ -52,24 +52,51 @@ class Activate{
 	                'create_posts' => true
 	            )
 	    );
-	    $args_taxonomy = array(
+	   
+
+		register_post_type('tickets', $args);
+		$args_taxonomy = array(
 	        'name'              => _x('Status', 'plural'),
-	        'public'       => false,
+	        'menu_name' => __('News Categories', 'TicketSystem'),
+	        'public'       => true,
 	        'rewrite'      => false,
 	        'hierarchical' => true
 	    );
 
 	    register_taxonomy('status',array('tickets'), array(
 	        'hierarchical' => true,
-	        'labels' => $args_taxonomy,
-	        'show_ui' => true,
+	        'labels' 	=> $args_taxonomy,
+		    'public'    => true,
+	        'show_ui' 	=> true,
+	        // 'show_in_menu' 		=> 'my_plugin',
 	        'show_admin_column' => true,
 	        'query_var' => true,
 	        'rewrite' => array( 'slug' => 'tickets' ),
-	      ));
+	      )
+	);
 
-		register_post_type('tickets', $args);
 	}
+	/*public static function registerCustomTaxonomy(){
+
+	 $args_taxonomy = array(
+	        'name'              => _x('Status', 'plural'),
+	        'public'       => true,
+	        'rewrite'      => false,
+	        'hierarchical' => true
+	    );
+
+	    register_taxonomy('status',array('tickets'), array(
+	        'hierarchical' => true,
+	        'labels' 	=> $args_taxonomy,
+		    'public'    => true,
+	        'show_ui' 	=> true,
+	        // 'show_in_menu' 		=> 'my_plugin',
+	        'show_admin_column' => true,
+	        'query_var' => true,
+	        'rewrite' => array( 'slug' => 'tickets' ),
+	      )
+	);
 	
+	}*/
 }
 

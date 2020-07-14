@@ -6,16 +6,18 @@
 namespace inc\Pages;
 use \Inc\Base\BaseController;
 use \Inc\Api\SettingsApi;
+use \Inc\Base\Activate;
 
 class Admin extends BaseController
 {
 	public $settings;
+	public $custom_taxonomy;
 	public $pages = array();
 	public $subpages = array();
 
 	public function __construct(){
 		$this->settings = new SettingsApi();
-
+		$this->custom_taxonomy = new SettingsApi();
 
 		$this->pages = array(
 				array(
@@ -25,7 +27,7 @@ class Admin extends BaseController
 					'menu_slug'		=>'my_plugin' ,
 					'callback'		=> function(){echo "<h1>Admin</h1>";},
 					'icon_url'		=>'dashicons-store',
-					'position'		=> 110,
+					'position'		=> 109,
 			)
 		);
 
@@ -35,8 +37,9 @@ class Admin extends BaseController
 						'page_title'	=> 'Manage Services', 
 						'menu_title'	=> 'Services', 
 						'capability'	=> 'manage_options', 
-						'menu_slug'		=> 'plugin_services', 
-						'callback'		=> function(){echo "<h1>Services</h1>";}
+						'menu_slug'		=> 'edit-tags.php?taxonomy=status&post_type=tickets', 
+						'callback'		=> false,
+						'position'		=> 1,
 				),
 				
 				
