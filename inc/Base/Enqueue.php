@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ * @package ticket_system_custom
  */
 
 namespace Inc\Base;
@@ -8,7 +8,7 @@ use Inc\Base\BaseController;
 use Inc\Base\Activate;
 
 class Enqueue extends BaseController{
-	
+
 	public function register(){
 		add_action('admin_enqueue_scripts',array($this, 'enqueue'));
 		add_action('init',
@@ -16,16 +16,11 @@ class Enqueue extends BaseController{
 		        Activate::registerCustomPostType();
 		    }
 		);
-		/*add_action('init',
-		    function ( ) {
-		        Activate::registerCustomTaxonomy();
-		    }
-		);*/
 	}
 
 		function enqueue(){
-		 wp_enqueue_style('my_plugin_css',$this->plugin_url.'assets/main-style.css');
-		 wp_enqueue_script('my_plugin_js',$this->plugin_url.'assets/myscript.js');
+		 wp_enqueue_style('my_plugin_css',$this->plugin_url.'/assets/main-style.css');
+		 wp_enqueue_script('my_plugin_js',$this->plugin_url.'/assets/myscript.js');
 	}
 }
 ?>
