@@ -1,13 +1,16 @@
 <?php
 /**
- * 
- */
+ * @package user_ticket_system
+ * @version 1.0
+ *
+*/
 
 namespace inc\Pages;
 
 use Inc\Base\Activate;
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
+use Inc\Base\ShortCodesUser;
 use Inc\Api\CallBacks\AdminCallBacks;
 
 
@@ -17,6 +20,7 @@ class Admin extends BaseController
 	public $callbacks;
 	public $pages = array();
 	public $subpages = array();
+	public $front_end_pages = array();
 
 	public function register(){
 
@@ -25,12 +29,14 @@ class Admin extends BaseController
 		$this->setPages();
 		$this->setSubPages();
 
+		$this->setFrontEndPages();
+
 		$this->setSettings();
 		$this->setSections();
 		$this->setFields();
 
 		$this->settings->addPages($this->pages)->withSubPage('Settings')->addSubPages($this->subpages)->register();
-
+		$this->settings->addFrontPages($this->front_end_pages)->register();
 		// add_action('admin_menu',array($this, 'add_admin_pages') );
 	}
 
@@ -59,6 +65,18 @@ class Admin extends BaseController
 						'position'		=> 1,
 				),
 			); 
+	}
+	public function setFrontEndPages(){
+			$this->front_end_pages = array(
+				array(
+					'post_title'	=>'Ticket System Login', 
+					'post_name'		=>'ticket-sytem-login', 
+					'post_content'	=>'[ticket_system_login]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			)
+		);
 	}
 	public function setSettings(){
 		$args	 = array(

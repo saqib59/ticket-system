@@ -1,27 +1,29 @@
 <?php 
 /**
- * @package user_login_register
+ * @package user_ticket_system
  * @version 1.0
  *
 */
-
 namespace Inc\Api;
 
+use Inc\Base\BaseController;
 class SettingsApi{
 	
 	public $admin_pages = array();
 	public $admin_subpages = array();
+	public $frontend_pages = array();
 	public $settings = array();
 	public $sections = array();
 	public $fields = array();
 
 	public function register(){
 		if (!empty($this->admin_pages)) {
-
 			add_action('admin_menu',array($this, 'addAdminMenu')); 
 		}
+		if (!empty($this->frontend_pages)) {
+			 add_action('init',array($this, 'addFrontEndPages')); 
+		}
 		if (!empty($this->settings)) {
-
 			add_action('admin_init',array($this, 'registerCustomFields')); 
 		}
 	}
@@ -29,6 +31,12 @@ class SettingsApi{
 	public function addPages(array $pages){
 
 		$this->admin_pages = $pages;
+
+		return $this;
+	}
+	public function addFrontPages(array $pages){
+
+		$this->frontend_pages = $pages;
 
 		return $this;
 	}
@@ -64,6 +72,26 @@ class SettingsApi{
 		$this->admin_subpages = array_merge($this->admin_subpages,$pages);
 		return $this;
 		
+	}
+	public function addFrontEndPages(){	
+
+		foreach ($this->frontend_pages as $fpage) {
+			$check_availability = get_page_by_path($fpage['post_name'],OBJECT);
+			if (!isset($check_availability)) {
+			wp_insert_post(array(
+    				'post_title' => $fpage['post_title'],
+    				'post_name' => $fpage['post_name'],
+    				'post_content' => $fpage['post_content'],
+    				'post_status' => $fpage['post_status'],
+    				'post_author' => $fpage['post_author'],
+    				'post_type' => $fpage['post_type'],
+		) );
+			}
+
+
+			// add_menu_page(,$page['post_name'],$page['post_content'],$page['post_status'],$page['post_author'],$page['post_type']);
+		}
+
 	}
 
 	public function addAdminMenu(){	

@@ -18,8 +18,8 @@ final class Init{
 		return array(
 			Pages\Admin::class,
 			Base\Enqueue::class,
-			Base\SettingsLinks::class,
 			Base\ShortCodesUser::class,
+			Base\SettingsLinks::class,
 			CustomFields\MyCustomFields::class
 		);
 	}
