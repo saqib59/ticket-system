@@ -24,14 +24,15 @@
                 <input type="checkbox">
                 <span class="checkmark"></span>
             </label>
-			<a href="#" class="forgot">Forgot Password?</a>
-			<div class="clearfix"></div>
+			<!-- <a href="#" class="forgot">Forgot Password?</a>
+			<div class="clearfix"></div> -->
 		</div>
 		<button type="submit" class="button-submit" id="login-user">Login</button>
-		<p>Don’t Have an Account? <a href=<?= home_url().'/register'; ?>>Register</a></p>
+		<p>Don’t Have an Account? <a href=<?= home_url().'/ticket-sytem-register'; ?>>Register</a></p>
 		</form>
 	</div>
-		</div><!--/row-->
+		</div><!--/row-->	
+	</div>
 </div><!--/container-wrap-->
 <?php
 /*}

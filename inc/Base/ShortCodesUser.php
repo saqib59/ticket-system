@@ -11,6 +11,8 @@ class ShortCodesUser extends BaseController{
 	public function __construct(){
 	add_shortcode( 'ticket_system_dashboard', array($this,'frontendDashboard'));	
 	add_shortcode( 'ticket_system_login', array($this,'frontendUserLogin'));	
+	add_shortcode( 'ticket_system_register', array($this,'frontendUserRegister'));	
+	add_shortcode( 'ticket_system_create_ticket', array($this,'frontendUserCreateTicket'));	
 		parent::__construct();//explicit call to parent constructor
 		
 	}
@@ -26,6 +28,19 @@ class ShortCodesUser extends BaseController{
 		return ob_get_clean();
         
 	}
+	public function frontendUserRegister(){
+		 ob_start();
+		require_once($this->plugin_path."/templates/frontendUserRegister.php");
+		return ob_get_clean();
+        
+	}
+	public function frontendUserCreateTicket(){
+		 ob_start();
+		require_once($this->plugin_path."/templates/frontendUserCreateTicket.php");
+		return ob_get_clean();
+        
+	}
+	
 }
 
 /*$obj = new ShortCodesUser();

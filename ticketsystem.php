@@ -34,4 +34,11 @@ defined('ABSPATH') or die('You cant access this file' );
 	if (class_exists( 'Inc\\Init' ) ) {
 		inc\Init::register_services();
 	}
+
+
+/*
+	$var = '';
+	$array = array();
+
+	$var = $array;*/
 	

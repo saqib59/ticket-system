@@ -20,6 +20,8 @@ final class Init{
 			Base\Enqueue::class,
 			Base\ShortCodesUser::class,
 			Base\SettingsLinks::class,
+			Base\MainAjax::class,
+			Base\AdminAjax::class,
 			CustomFields\MyCustomFields::class
 		);
 	}

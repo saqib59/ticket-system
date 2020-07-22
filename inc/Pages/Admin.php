@@ -57,12 +57,21 @@ class Admin extends BaseController
 				$this->subpages = array(
 					array(
 						'parent_slug'	=> 'my_plugin', 
-						'page_title'	=> 'Manage Services', 
-						'menu_title'	=> 'Services', 
+						'page_title'	=> 'Manage Status', 
+						'menu_title'	=> 'Status', 
 						'capability'	=> 'manage_options', 
 						'menu_slug'		=> 'edit-tags.php?taxonomy=status&post_type=tickets', 
 						'callback'		=> false,
 						'position'		=> 1,
+				),
+					array(
+						'parent_slug'	=> 'my_plugin', 
+						'page_title'	=> 'Manage Services', 
+						'menu_title'	=> 'Services', 
+						'capability'	=> 'manage_options', 
+						'menu_slug'		=> 'ticket-services', 
+						'callback' 		=> array($this->callbacks, 'adminManageServices'),
+						'position'		=> 2,
 				),
 			); 
 	}
@@ -75,7 +84,32 @@ class Admin extends BaseController
 					'post_status'	=>'publish' ,
 					'post_author'	=> '1',
 					'post_type'		=>'page',
-			)
+			),
+				array(
+					'post_title'	=>'Ticket System Register', 
+					'post_name'		=>'ticket-sytem-register', 
+					'post_content'	=>'[ticket_system_register]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
+				array(
+					'post_title'	=>'Ticket System Dashboard', 
+					'post_name'		=>'ticket-sytem-dashboard', 
+					'post_content'	=>'[ticket_system_dashboard]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
+				array(
+					'post_title'	=>'Ticket System Create Ticket', 
+					'post_name'		=>'ticket-system-create-ticket', 
+					'post_content'	=>'[ticket_system_create_ticket]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
+				
 		);
 	}
 	public function setSettings(){

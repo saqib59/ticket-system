@@ -15,11 +15,6 @@ extract($fp_options);*/
 	<div class='container'>
 		<div class="row">
 			
-
-
-			
-		
-
 		</div><!--/row-->
 	</div><!--/container-->
 <!-- <div id="myModal" class="modal">
@@ -52,12 +47,12 @@ extract($fp_options);*/
 ?>			
 	<div id="main-area">
 		<?php 
-		// include('inc/sidebar.php');
+		 include('sidebars/sidebar.php');
 		?>
 	<div id="content-rhs">
 		<div id="card">
 			<h1>User - ticket Dashboard</h1>
-			<a href="<?= home_url().'/create-ticket-2'; ?>" id="button">Create New Ticket</a>
+			<a href="<?= home_url().'/ticket-system-create-ticket'; ?>" id="button">Create New Ticket</a>
 			<!-- <button class="Create_tick">Create New ticket</button> -->
 			<table id="myTable" class="cell-border" style="width:100%" >
         <thead>
@@ -76,7 +71,7 @@ extract($fp_options);*/
                                  'post_status'     => array('publish'),
                                  'order'           => 'DESC',
                                  // 'paged'           => get_query_var('paged') ? get_query_var('paged') : 1,
-                                 'meta_query'      =>
+                                /* 'meta_query'      =>
                                     array(
                                        array(
                                            'relation' => 'OR',
@@ -86,7 +81,7 @@ extract($fp_options);*/
                                        )
                                             
                                   )
-                                    )
+                                    )*/
                                  )
                               );
                       if ( $the_query->have_posts() ) { 
