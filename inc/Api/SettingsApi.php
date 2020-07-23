@@ -22,6 +22,8 @@ class SettingsApi{
 		}
 		if (!empty($this->frontend_pages)) {
 			 add_action('init',array($this, 'addFrontEndPages')); 
+			 add_action('get_header',array($this, 'redirectHomeIfLogOut')); 
+			 add_action('get_header',array($this, 'redirectHomeIfLogIn')); 
 		}
 		if (!empty($this->settings)) {
 			add_action('admin_init',array($this, 'registerCustomFields')); 
@@ -144,6 +146,34 @@ class SettingsApi{
 		add_settings_field( $field["id"], $field["title"], (isset($field["callback"])?$field["callback"]: ''), $field["page"] ,  $field["section"], (isset($field["args"])?$field["args"]: '') );
 	}
 
+  }
+
+  public function redirectHomeIfLogOut(){
+  		$current_user_id = get_current_user_id();
+	    $pages = array(
+	        0 => 'ticket-system-create-ticket',
+	        1 => 'ticket-sytem-dashboard',
+	        2 => 'ticket-system-view-ticket',
+	        // 3 => 'challenge-history',
+	        // 4 => 'view-challange'
+	    );
+        foreach ($pages as $index => $page_slug) {
+        if (is_page($pages[$index]) && $current_user_id == 0) {
+            wp_redirect(home_url());
+        }
+    }
+  }
+  public function redirectHomeIfLogIn(){
+  		 $current_user_id = get_current_user_id();
+	    $pages = array(
+	        0 => 'ticket-sytem-register',
+	        1 => 'ticket-sytem-login'
+	    );
+        foreach ($pages as $index => $page_slug) {
+        if (is_page($pages[$index]) && $current_user_id != 0) {
+            wp_redirect(home_url());
+        }
+    }			
   }
 }
 ?>

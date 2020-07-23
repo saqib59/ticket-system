@@ -109,6 +109,16 @@ class Admin extends BaseController
 					'post_author'	=> '1',
 					'post_type'		=>'page',
 			),
+				array(
+					'post_title'	=>'Ticket System View Ticket', 
+					'post_name'		=>'ticket-system-view-ticket', 
+					'post_content'	=>'[ticket_system_view_ticket]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
+
+				
 				
 		);
 	}

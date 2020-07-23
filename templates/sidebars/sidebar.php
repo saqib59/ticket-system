@@ -1,21 +1,26 @@
 <?php
 $current_user = wp_get_current_user();
 
-$directoryURI = $_SERVER['REQUEST_URI'];
-$path = parse_url($directoryURI, PHP_URL_PATH);
-$components = explode('/', $path);
-$first_part = $components[1];
-if ($current_user->roles[0] == 'pureproof-user') {
+
+// var_dump($directoryURI);
+function check_url_ticket_page($slug){
+	$directoryURI = $_SERVER['REQUEST_URI'];
+		if (strpos($directoryURI, $slug) !== false) {
+	    return true;
+	}
+}
+
+if ($current_user->roles[0] == 'ticket-system-user') {
 ?>
 
 <div id="content-lhs">
 			<ul>
-	<li><a href="<?= home_url().'/user-ticket'; ?>" class=<?php echo ($first_part == 'user-ticket')? 'active': ''; ?> ><i class="fa fa-area-chart" aria-hidden="true" ></i> Dashboard</a></li>
+	<li><a href="<?= home_url().'/ticket-sytem-dashboard'; ?>" class=<?php echo (check_url_ticket_page('ticket-sytem-dashboard'))? 'active': ''; ?> ><i class="fa fa-area-chart" aria-hidden="true" ></i> Dashboard</a></li>
 	<!-- <li><a href=""><i class="fa fa-user" aria-hidden="true"></i> User - Ticket</a></li> -->
 	<!-- <li><a href="#"><i class="fa fa-trash" aria-hidden="true"></i> Ticket Delete</a></li> -->
-	<li><a href="<?= home_url().'/create-ticket-2'; ?>" class=<?php echo ($first_part == 'create-ticket-2')? 'active': ''; ?> ><i class="fa fa-cogs" aria-hidden="true"></i> Create Ticket</a></li>
-	<li><a href="<?= home_url().'/message-board'; ?>" class=<?php echo ($first_part == 'message-board')? 'active': ''; ?> ><i class="fa fa-users" aria-hidden="true"></i> Message board</a></li>
-	<li><a href="<?= home_url().'/file-sharing'; ?>" class=<?php echo ($first_part == 'file-sharing')? 'active': ''; ?> ><i class="fa fa-file" aria-hidden="true"></i> file sharing</a></li>
+	<li><a href="<?= home_url().'/ticket-system-create-ticket'; ?>"  class=<?php echo (check_url_ticket_page('ticket-system-create-ticket'))? 'active': ''; ?> ><i class="fa fa-cogs" aria-hidden="true"></i> Create Ticket</a></li>
+	<li><a href="<?= home_url().'/ticket-sytem-msg-board'; ?>"  class=<?php echo (check_url_ticket_page('ticket-sytem-msg-board'))? 'active': ''; ?> ><i class="fa fa-users" aria-hidden="true"></i> Message board</a></li>
+	<li><a href="<?= home_url().'/ticket-sytem-files'; ?>"  class=<?php echo (check_url_ticket_page('ticket-sytem-files'))? 'active': ''; ?> ><i class="fa fa-file" aria-hidden="true"></i> file sharing</a></li>
 	
 			</ul>
 		</div>
@@ -26,9 +31,9 @@ if ($current_user->roles[0] == 'pureproof-user') {
 		?>
 		<div id="content-lhs">
 			<ul>
-	<li><a href="<?= home_url().'/user-ticket'; ?>" class=<?php echo ($first_part == 'user-ticket')? 'active': ''; ?> ><i class="fa fa-area-chart" aria-hidden="true" ></i> Dashboard</a></li>
-	<li><a href="<?= home_url().'/message-board'; ?>" class=<?php echo ($first_part == 'message-board')? 'active': ''; ?> ><i class="fa fa-users" aria-hidden="true"></i> Message board</a></li>
-	<li><a href="<?= home_url().'/file-sharing'; ?>" class=<?php echo ($first_part == 'file-sharing')? 'active': ''; ?> ><i class="fa fa-file" aria-hidden="true"></i> file sharing</a></li>
+	<li><a href="<?= home_url().'/ticket-sytem-dashboard'; ?>" class=<?php echo (check_url_ticket_page('ticket-sytem-dashboard'))? 'active': ''; ?> ><i class="fa fa-area-chart" aria-hidden="true" ></i> Dashboard</a></li>
+	<li><a href="<?= home_url().'/ticket-sytem-msg-board'; ?>" class=<?php echo (check_url_ticket_page('ticket-sytem-msg-board'))? 'active': ''; ?> ><i class="fa fa-users" aria-hidden="true"></i> Message board</a></li>
+	<li><a href="<?= home_url().'/ticket-sytem-files'; ?>" class=<?php echo (check_url_ticket_page('ticket-sytem-files'))? 'active': ''; ?> ><i class="fa fa-file" aria-hidden="true"></i> file sharing</a></li>
 			</ul>
 		</div>
 		<?php

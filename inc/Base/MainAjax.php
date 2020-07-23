@@ -4,8 +4,9 @@
  * @version 1.0
  */
 namespace Inc\Base;
+use Inc\Base\BaseController;
 
-class MainAjax{
+class MainAjax {
 	function __construct(){
 		//register user
 		add_action('wp_ajax_daily_user_registration_form', array($this,'ticketSystemUserRegister'));
@@ -16,8 +17,11 @@ class MainAjax{
 		//create ticket
 		add_action('wp_ajax_create_ticket', array($this,'ticketSystemCreateTicket'));
 		add_action('wp_ajax_nopriv_create_ticket', array($this,'ticketSystemCreateTicket'));
-		
+		//close_ticket
+		add_action('wp_ajax_close_ticket', array($this,'ticketSystemCloseTicket'));
+		add_action('wp_ajax_nopriv_close_ticket', array($this,'ticketSystemCloseTicket'));
 	}
+
 	function ticketSystemUserRegister(){
 			 if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['pass'])) {
          $response = array(
@@ -120,7 +124,7 @@ class MainAjax{
                 $err['status'] = false;
                 //return $user->get_error_message();
             } else {
-                $redirect_dashboard  = home_url('/user-ticket');
+                $redirect_dashboard  = home_url('/ticket-sytem-dashboard');
                 //$redirect_dashboard  = home_url();
                 $err['status']       = true;
                 $err['redirect_url'] = $redirect_dashboard;
@@ -155,7 +159,7 @@ class MainAjax{
             'post_author'       => get_current_user_id(),
         );
          $post_id = wp_insert_post( $post );
-         wp_set_post_terms( $post_id, array(48), 'status');
+         // wp_set_post_terms( $post_id, array('pend'), 'status');
          add_post_meta($post_id, '_mcf_ticket_title_custom',$_POST['ticket_title']);
          add_post_meta($post_id, '_mcf_user_name_custom',$_POST['full_name']);
          add_post_meta($post_id, '_mcf_address_custom',$_POST['Address']);
@@ -165,7 +169,7 @@ class MainAjax{
          add_post_meta($post_id, '_mcf_zipcode_custom',$_POST['zip_code']);
          add_post_meta($post_id, '_mcf_date_custom',$_POST['date']);
          add_post_meta($post_id, '_mcf_desc_custom',$_POST['description']);
-         // add_post_meta($post_id, 'user_id',$_POST['user_id']);
+         add_post_meta($post_id, '_mcf_user_id',$_POST['user_id']);
 
         ob_start();
         include(get_stylesheet_directory() .'/inc/email-template.php');
@@ -188,6 +192,45 @@ class MainAjax{
 	    }
         return $this->responseJson($response);
 
+	}
+	function ticketSystemCloseTicket(){
+
+		 	$ticket_id = $_POST['tck_id'];
+    		$post_type = get_post_type($ticket_id);
+        		if ( $post_type == 'tickets') {
+				    $status = wp_get_post_terms($ticket_id,'status', array('fields' => 'all' ) );
+				    
+				    if ($status[0]->name == 'Closed') {
+				          $response = array(
+				            "message"   =>'Ticket Already Closed',
+				            "error"     => true
+				        );
+				    }
+				    else{
+				    	$terms = get_terms([
+							    'taxonomy' => 'status',
+							    'hide_empty' => false,
+								]);
+				    	 foreach ($terms as $term) {
+					    	if ($term->name == 'Closed' || $term->name == 'closed') {
+				         			wp_set_post_terms( $ticket_id, array($term->term_id), 'status');
+					    	}
+						}
+				         update_post_meta($ticket_id,'_mcf_tech_comments_custom',$_POST['comments_by_technician']);
+				          $response = array(
+				            "message"   =>'Ticket Closed Successfully!',
+				            "error"     => false
+				        );
+				          
+				    }
+			}
+    	else{
+                $response = array(
+                "message"   =>'Ticket Does Not Exist!',
+                "error"     => true
+            );
+    	}
+            return $this->responseJson($response);
 	}
 
 	function responseJson($data){

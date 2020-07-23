@@ -93,6 +93,14 @@ namespace Inc\CustomFields;
             "capability"    => "manage_options"
         ),
         array(
+            "name"          => "tech_comments_custom",
+            "title"         => "Technician Comments",
+            "description"   => "",
+            "type"          => "textarea",
+            "scope"         =>   array( "tickets" ),
+            "capability"    => "manage_options"
+        ),
+        array(
             "name"          => "tech_custom",
             "title"         => "Assign Technician",
             "description"   => "",
@@ -204,7 +212,7 @@ namespace Inc\CustomFields;
                                     <option value="">:: Select Technician ::</option>
 									        <?php
 									        $args = array(
-									            'role'    => 'pureproof-tech',
+									            'role'    => 'ticket-system-tech',
 									        );
 									        $users = get_users( $args );
 									        foreach ($users as $user) {

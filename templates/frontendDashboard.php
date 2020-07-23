@@ -1,15 +1,3 @@
-<?php 
-
-/*if ($current_user->ID != 0) {
-
-get_header(); 
-nectar_page_header($post->ID); 
-
-//full page
-$fp_options = nectar_get_full_page_options();
-extract($fp_options);*/
-
-?>
 
 <div class="container-wrap">
 	<div class='container'>
@@ -32,8 +20,10 @@ extract($fp_options);*/
      </div>
   </div>
 </div> 	 -->
+
 		<?php 
-		// if ($current_user->roles[0] == 'pureproof-user') {
+    // var_dump(wp_get_current_user());
+		if (wp_get_current_user()->roles[0] == 'ticket-system-user') {
 		?>
 <div class="toggle_bar"> 
 	<a href="javascript:void(0)" class="myToggle"> 
@@ -71,43 +61,41 @@ extract($fp_options);*/
                                  'post_status'     => array('publish'),
                                  'order'           => 'DESC',
                                  // 'paged'           => get_query_var('paged') ? get_query_var('paged') : 1,
-                                /* 'meta_query'      =>
+                                 'meta_query'      =>
                                     array(
                                        array(
                                            'relation' => 'OR',
                                          array(
-                                        'key' => 'user_id',
-                                        'value' => $current_user->ID
+                                        'key' => '_mcf_user_id',
+                                        'value' => get_current_user_id()
                                        )
                                             
                                   )
-                                    )*/
+                                    )
                                  )
                               );
                       if ( $the_query->have_posts() ) { 
                       		while ( $the_query->have_posts() ) {
 								$the_query->the_post();
 								$post_id 	= get_the_ID();
-								$title 		= get_post_meta( $post_id, 'ticket_title', true );
-								$full_name 	= get_post_meta( $post_id, 'full_name', true );
-								$Address 	= get_post_meta( $post_id, 'Address', true );
-								$service 	=  get_post_meta( $post_id, 'service', true );
-								$date 		= get_post_meta( $post_id, 'date', true );
+								$title 		= get_post_meta( $post_id, '_mcf_ticket_title_custom', true );
+								$full_name 	= get_post_meta( $post_id, '_mcf_user_name_custom', true );
+								$Address 	= get_post_meta( $post_id, '_mcf_address_custom', true );
+								$service 	=  get_post_meta( $post_id, '_mcf_service_custom', true );
+								$date 		= get_post_meta( $post_id, '_mcf_date_custom', true );
 								$status 	= wp_get_post_terms($post_id,'status', array('fields' => 'all' ) );
-								// echo "<pre>";
-								// var_dump($post_id[0]->name);
-								// echo "</pre>";
+						
 
 								?>
 								   <tr>
 					                <td><?php echo $post_id; ?></td>
 					                <td><?php echo $date; ?></td>
 					                <td><?php echo $title; ?></td>
-									<td><?php echo $status[0]->name; ?></td>
+									<td><?php echo ((empty($status))? '': $status[0]->name); ?></td>
 					                <td><i class="fa fa-ellipsis-v" aria-hidden="true"></i>
 					                   <div id="myPop">
 					                       <ul>
-					                           <li><a href="<?= home_url().'/close-ticket?post_id='.$post_id; ?>" ><i class="fa fa-eye" aria-hidden="true"></i> View </a></li>
+					                           <li><a href="<?= home_url().'/ticket-system-view-ticket?post_id='.$post_id; ?>" ><i class="fa fa-eye" aria-hidden="true"></i> View </a></li>
 					                           <!-- <li><a href="#" id="myBtn"><i class="fa fa-trash" aria-hidden="true"></i> delete file</a></li> -->
 					                       </ul>
 					                   </div>
@@ -125,8 +113,9 @@ extract($fp_options);*/
 	</div>
 	</div>	
 	<?php
-// }
-/*else{
+}
+else{
+
 	?>
 
 <div class="toggle_bar"> 
@@ -137,11 +126,11 @@ extract($fp_options);*/
 	</a>
 </div>	
 <?php
-  include("phoneMenu/phone_menu.php");
+  // include("phoneMenu/phone_menu.php");
 ?>	
 	<div id="main-area">
 		<?php 
-		include('inc/sidebar.php');
+		include('sidebars/sidebar.php');
 		?>
 	<div id="content-rhs">
 		<div id="card">
@@ -169,8 +158,8 @@ extract($fp_options);*/
                                        array(
                                            'relation' => 'OR',
                                          array(
-                                        'key' => '_wporg_meta_key',
-                                        'value' => $current_user->ID
+                                        'key' => '_mcf_tech_custom',
+                                        'value' => get_current_user_id()
                                        )
                                             
                                   )
@@ -180,28 +169,25 @@ extract($fp_options);*/
                       if ( $the_query->have_posts() ) { 
                       		while ( $the_query->have_posts() ) {
 								$the_query->the_post();
-								$post_id 	= get_the_ID();
-								$title 		= get_post_meta( $post_id, 'ticket_title', true );
-								$full_name 	= get_post_meta( $post_id, 'full_name', true );
-								$Address 	= get_post_meta( $post_id, 'Address', true );
-								$service 	=  get_post_meta( $post_id, 'service', true );
-								$date 		= get_post_meta( $post_id, 'date', true );
-								$status 	= wp_get_post_terms($post_id,'status', array('fields' => 'all' ) );
-								// echo "<pre>";
-								// var_dump($post_id[0]->name);
-								// echo "</pre>";
+								$post_id 	    = get_the_ID();
+							  $title    = get_post_meta( $post_id, '_mcf_ticket_title_custom', true );
+                $full_name  = get_post_meta( $post_id, '_mcf_user_name_custom', true );
+                $Address  = get_post_meta( $post_id, '_mcf_address_custom', true );
+                $service  =  get_post_meta( $post_id, '_mcf_service_custom', true );
+                $date     = get_post_meta( $post_id, '_mcf_date_custom', true );
+								$status 	    = wp_get_post_terms($post_id,'status', array('fields' => 'all' ) );
 
 								?>
 								   <tr>
 					                <td><?php echo $post_id; ?></td>
 					                <td><?php echo $date; ?></td>
-									<td><?php echo $title; ?></td>
-									<td><?php echo $status[0]->name; ?></td>
+        									<td><?php echo $title; ?></td>
+        									<td><?php echo ((empty($status))? '': $status[0]->name); ?></td>
 					                <td><i class="fa fa-ellipsis-v" aria-hidden="true"></i>
 					                   <div id="myPop">
 					                       <ul>
-					                           <li><a href="<?= home_url().'/close-ticket?post_id='.$post_id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View </a></li>
-					                           <li><a href="<?= home_url().'/close-ticket?close_id='.$post_id; ?>" id="myBtn"><i class="fa fa-lock" aria-hidden="true"></i> Close </a></li>
+					                           <li><a href="<?= home_url().'/ticket-system-view-ticket?post_id='.$post_id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View </a></li>
+					                           <li><a href="<?= home_url().'/ticket-system-view-ticket?close_id='.$post_id; ?>" id="myBtn"><i class="fa fa-lock" aria-hidden="true"></i> Close </a></li>
 					                       </ul>
 					                   </div>
 					                </td>
@@ -218,7 +204,7 @@ extract($fp_options);*/
 	</div>
 	</div>	
 <?php
- }*/
+ }
 ?>
 </div><!--/container-wrap-->
 
