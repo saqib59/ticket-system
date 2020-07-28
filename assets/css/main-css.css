@@ -7,6 +7,12 @@
     padding: 15px !important;
 	display: none;
 }
+div#content-lhs ul{
+    margin: 0px;
+}
+div#content-lhs ul li{
+    list-style: none;
+}
 .phone_menu ul li {
     list-style: none;
 }

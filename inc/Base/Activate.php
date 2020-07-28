@@ -1,11 +1,11 @@
 <?php
 /**
- * @package user_login_register
+ * @package ticket_system_custom
  * @version 1.0
  */
 namespace inc\Base;
 
-class Activate{
+class Activate extends BaseController{
 
 	public static function activate(){	
 		flush_rewrite_rules();
@@ -88,15 +88,13 @@ class Activate{
 	public static function createSqlTables(){
 
 		global $wpdb;
-		$table_name = $wpdb->prefix . "ticket_services";
+		$table_name_1 = $wpdb->prefix . "ticket_services";
+		$table_name_2 = $wpdb->prefix . "ticket_files";
 
-		// $my_products_db_version = '1.0.0';
 		$charset_collate = $wpdb->get_charset_collate();
-/*$x = $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
-				var_dump($x);exit();*/
 
-			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) != $table_name ) {
-			    $sql = "CREATE TABLE $table_name (
+			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name_1}'" ) != $table_name_1 ) {
+			    $sql = "CREATE TABLE $table_name_1 (
 			            ID mediumint(9) NOT NULL AUTO_INCREMENT,
 			            `service_name` text NOT NULL,
 			            created_at TIMESTAMP,
@@ -107,6 +105,32 @@ class Activate{
 			    dbDelta( $sql );
 			    // add_option( 'my_db_version', $my_products_db_version );
 			}
+
+			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name_2}'" ) != $table_name_2 ) {
+			    $sql2 = "CREATE TABLE $table_name_2 (
+			            ID BIGINT(20) NOT NULL AUTO_INCREMENT,
+			            user_id BIGINT(20) NOT NULL,
+			            file_name VARCHAR(225),
+						 file_extension VARCHAR(225),
+						 file_size VARCHAR(50),
+						 file_location VARCHAR(225),
+						 new_file_status TINYINT,
+						 created_at TIMESTAMP,
+						 updated_at TIMESTAMP,
+						 status TINYINT,
+						 sender_id BIGINT(20),
+						 receiver_id BIGINT(20),
+						 PRIMARY KEY (ID)
+			    )    $charset_collate;";
+
+			    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			    dbDelta( $sql2 );
+			    // add_option( 'my_db_version', $my_products_db_version );
+			}
+		}
+		public  function chatInclude(){
+			require_once $this->plugin_path.'chat/ease_booking_main.php';
+
 		}
 }
 

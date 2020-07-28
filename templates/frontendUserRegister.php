@@ -28,7 +28,7 @@
 			<input type="password" name="c_pass" placeholder="Confirm Password">
 		</div>				
 		<button type="submit" id="register_submit" class="button-submit">Register</button>
-		<p>You already have an account? <a href=<?= home_url().'/ticket-sytem-login' ?>>Login</a></p>
+		<p>You already have an account? <a href=<?= home_url().'/ticket-system-login' ?>>Login</a></p>
 		</form>
 	</div>
 

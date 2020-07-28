@@ -20,6 +20,9 @@ class MainAjax {
 		//close_ticket
 		add_action('wp_ajax_close_ticket', array($this,'ticketSystemCloseTicket'));
 		add_action('wp_ajax_nopriv_close_ticket', array($this,'ticketSystemCloseTicket'));
+		//files-to-admin
+		add_action('wp_ajax_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
+		add_action('wp_ajax_nopriv_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
 	}
 
 	function ticketSystemUserRegister(){
@@ -55,7 +58,7 @@ class MainAjax {
 	        $user_id  = wp_insert_user($userdata);
 	        $response = array(
 	                    "message" =>"User registered",
-	                    "redirect_url" => home_url().'/ticket-sytem-login', 
+	                    "redirect_url" => home_url().'/ticket-system-login', 
 	                    "error" => false
 	                );
 	       
@@ -124,7 +127,7 @@ class MainAjax {
                 $err['status'] = false;
                 //return $user->get_error_message();
             } else {
-                $redirect_dashboard  = home_url('/ticket-sytem-dashboard');
+                $redirect_dashboard  = home_url('/ticket-system-dashboard');
                 //$redirect_dashboard  = home_url();
                 $err['status']       = true;
                 $err['redirect_url'] = $redirect_dashboard;
@@ -231,6 +234,122 @@ class MainAjax {
             );
     	}
             return $this->responseJson($response);
+	}
+
+	function ticketSystemSendToAdmin(){
+		date_default_timezone_set("America/New_York");
+        $selected_users = 1;
+        $user_ids =  explode(",",$selected_users);  // string to array
+        //$errors = 0;
+        $countfiles        = count($_FILES['admin-system-files']['name']);
+        $admin_files = $_FILES['admin-system-files'];
+        $check_file_exists = $admin_files['name'][0];
+        if (empty($check_file_exists)) {
+            $err['message']  = 'Kindly Select a file';
+            $err['error'] = true;
+            
+        }
+        if ($countfiles > 10) {
+
+            $err['message']  = "Can't select files more than 10. You selected $countfiles  files.";
+            $err['error'] = true;
+            //$errors += 1;
+        
+        }
+
+        if(count($user_ids) > 0){
+            //$users_ids = array();
+            $uu = 0;
+            $files_names = array();
+            foreach ($user_ids as $key => $value) {
+                $uu++;
+                $current_user_id = get_current_user_id();  
+                $user_id = trim($value);
+                $folder_location = ABSPATH . 'wp-content/uploads/user_system_admin';
+                $folder_created  = wp_mkdir_p($folder_location);
+                if ($folder_created == true) {
+                    date_default_timezone_set("America/New_York");
+                    //if($uu == 1){
+                    for ($file_looping = 0; $file_looping < $countfiles; $file_looping++) {
+                        
+                        $original_name      = $admin_files['name'][$file_looping];
+                        $attach_unique_name = $user_id.'_'.time();
+                        $new_name           = $attach_unique_name.'_'.$original_name;
+                        // Now we'll move the temporary file to this plugin's uploads directory.
+                
+                        $source             = $admin_files['tmp_name'][$file_looping];
+                        $destination        = $folder_location.'/'.$new_name;
+
+                        $file_status        = move_uploaded_file($source, $destination);
+                        if($file_status == true){
+                            $files_names[] = $destination;
+                        }
+
+                        if($uu > 1){
+                                copy($_SESSION['all_files_names'][$file_looping],$destination);
+                        
+                        }
+                        $path_parts         = pathinfo($original_name);
+                        //file extension
+                        $fileExtension      = $path_parts['extension'];
+                        $file_date          = date("Y-m-d h:i:s");
+                    
+                        global $wpdb;
+
+                        $tablename          = $wpdb->prefix.'ticket_files';
+                        $staus_table_insert = $wpdb->insert($tablename, array(
+                                'user_id'           => $current_user_id,
+                                'file_name'         => $new_name,
+                                'file_extension'    => $fileExtension,
+                                'file_size'         => $admin_files['size'][$file_looping],
+                                'file_location'     => 'user_system_admin',
+                                'created_at'        => $file_date,
+                                'status'            => 1,
+                                'sender_id'         => $current_user_id,
+                                'receiver_id'       => 1001,
+                                'new_file_status'   => 0
+                        ), array(
+                            '%d',
+                            '%s',
+                            '%s',
+                            '%s',
+                            '%s',
+                            '%s',
+                            '%d',
+                            '%d',
+                            '%d',
+                            '%d'
+                        ));
+
+                    }
+                        $_SESSION['all_files_names'] = $files_names;
+                }
+                else{
+                    $err['message']  = "Error in creating folder";
+                    $err['error'] = true;
+                }
+
+                /*ob_start();
+                include(get_stylesheet_directory() .'/inc/file-email-user.php');
+                $email_content = ob_get_contents();
+                ob_end_clean();
+                $headers = array('Content-Type: text/html; charset=UTF-8');
+                $email_array = array('rjones@pureproofinc.com','afarinella@pureproofinc.com','gcapardi@pureproofinc.com');
+                wp_mail($email_array, "New File Shared", $email_content, $headers);*/
+            }
+            
+            
+                    
+            $err['message']  = "File(s) Successfully sent to admin ";
+            // $err['redirect_url'] = home_url().'/wp-admin/admin.php?page=files-users';
+            $err['error'] = false;
+        } 
+        else {
+            $err['message']  = 'File is not sent to any selected user';
+            $err['error']  = true;
+            
+        }
+     		return $this->responseJson($err);               
 	}
 
 	function responseJson($data){

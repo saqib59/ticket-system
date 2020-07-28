@@ -1,13 +1,12 @@
 (function($){
-/*   $('#myTable2').DataTable();
-	 $('#myTable3').DataTable();*/
-        // $("input[id*='in-popular-status']").click(function(){
-        //     var status = $(this).val();
-        //     $("input[id=acf-field_5e989541af11d]").val(status);
-        // });
+   $('#myTable2').DataTable();
+	 $('#myTable3').DataTable();
+       /* $("input[id*='in-popular-status']").click(function(){
+            var status = $(this).val();
+            $("input[id=acf-field_5e989541af11d]").val(status);
+        });*/
 	 $("#add_service").submit(function(){
     	event.preventDefault();
-      alert('working');
     	var serialize_form = $(this).serialize();
 	 	 $.ajax({
                 type:"POST",
@@ -161,7 +160,6 @@
     });
        $(".delete-file").click(function(){
           var file_id = $(this).attr('data-id');
-
                $.ajax({
                 type:"POST",
                 url: the_ajax_script.ajaxurl,

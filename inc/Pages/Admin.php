@@ -73,13 +73,31 @@ class Admin extends BaseController
 						'callback' 		=> array($this->callbacks, 'adminManageServices'),
 						'position'		=> 2,
 				),
+					array(
+						'parent_slug'	=> 'my_plugin', 
+						'page_title'	=> 'File Sharing', 
+						'menu_title'	=> 'File Sharing', 
+						'capability'	=> 'manage_options', 
+						'menu_slug'		=> 'ticket-file-sharing', 
+						'callback' 		=> array($this->callbacks, 'adminToUserShareFiles'),
+						'position'		=> 3,
+				),
+					/*array(
+						'parent_slug'	=> 'my_plugin', 
+						'page_title'	=> 'Shared Files', 
+						'menu_title'	=> 'Shared Files', 
+						'capability'	=> 'manage_options', 
+						'menu_slug'		=> 'ticket-file-shared', 
+						'callback' 		=> array($this->callbacks, 'adminSharedFiles'),
+						'position'		=> 4,
+				),*/
 			); 
 	}
 	public function setFrontEndPages(){
 			$this->front_end_pages = array(
 				array(
 					'post_title'	=>'Ticket System Login', 
-					'post_name'		=>'ticket-sytem-login', 
+					'post_name'		=>'ticket-system-login', 
 					'post_content'	=>'[ticket_system_login]', 
 					'post_status'	=>'publish' ,
 					'post_author'	=> '1',
@@ -87,7 +105,7 @@ class Admin extends BaseController
 			),
 				array(
 					'post_title'	=>'Ticket System Register', 
-					'post_name'		=>'ticket-sytem-register', 
+					'post_name'		=>'ticket-system-register', 
 					'post_content'	=>'[ticket_system_register]', 
 					'post_status'	=>'publish' ,
 					'post_author'	=> '1',
@@ -95,7 +113,7 @@ class Admin extends BaseController
 			),
 				array(
 					'post_title'	=>'Ticket System Dashboard', 
-					'post_name'		=>'ticket-sytem-dashboard', 
+					'post_name'		=>'ticket-system-dashboard', 
 					'post_content'	=>'[ticket_system_dashboard]', 
 					'post_status'	=>'publish' ,
 					'post_author'	=> '1',
@@ -113,6 +131,14 @@ class Admin extends BaseController
 					'post_title'	=>'Ticket System View Ticket', 
 					'post_name'		=>'ticket-system-view-ticket', 
 					'post_content'	=>'[ticket_system_view_ticket]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
+				array(
+					'post_title'	=>'Ticket System File Sharing', 
+					'post_name'		=>'ticket-system-files', 
+					'post_content'	=>'[ticket_system_file_sharing]', 
 					'post_status'	=>'publish' ,
 					'post_author'	=> '1',
 					'post_type'		=>'page',

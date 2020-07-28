@@ -25,4 +25,10 @@ class AdminCallBacks extends BaseController{
 	public function adminManageServices(){
 		return require_once("$this->plugin_path/templates/Admin/ManageServices.php");
 	}
+	public function adminSharedFiles(){
+		return require_once("$this->plugin_path/templates/Admin/SharedFiles.php");
+	}
+	public function adminToUserShareFiles(){
+		return require_once("$this->plugin_path/templates/Admin/adminToUserShareFiles.php");
+	}
 }

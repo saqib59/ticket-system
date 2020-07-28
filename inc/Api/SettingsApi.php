@@ -152,9 +152,9 @@ class SettingsApi{
   		$current_user_id = get_current_user_id();
 	    $pages = array(
 	        0 => 'ticket-system-create-ticket',
-	        1 => 'ticket-sytem-dashboard',
+	        1 => 'ticket-system-dashboard',
 	        2 => 'ticket-system-view-ticket',
-	        // 3 => 'challenge-history',
+	        3 => 'ticket-system-files',
 	        // 4 => 'view-challange'
 	    );
         foreach ($pages as $index => $page_slug) {
@@ -166,8 +166,8 @@ class SettingsApi{
   public function redirectHomeIfLogIn(){
   		 $current_user_id = get_current_user_id();
 	    $pages = array(
-	        0 => 'ticket-sytem-register',
-	        1 => 'ticket-sytem-login'
+	        0 => 'ticket-system-register',
+	        1 => 'ticket-system-login'
 	    );
         foreach ($pages as $index => $page_slug) {
         if (is_page($pages[$index]) && $current_user_id != 0) {

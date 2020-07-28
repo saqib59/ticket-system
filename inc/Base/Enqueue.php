@@ -29,20 +29,28 @@ class Enqueue extends BaseController{
 		);
 		add_action('init',
 		    function ( ) {
-		        Activate::addUserRoles();
+		        $ob = new Activate();
+		        $ob->chatInclude();
 		    }
 		);
 
 	}
 
 	function enqueue($hook){
+		// var_dump($hook);exit();
 		 wp_enqueue_style('my_plugin_css',$this->plugin_url.'/assets/main-style.css');
 		   		$menu_pages[0] = 'ticket-system_page_ticket-services';
-	            /*$menu_pages[1] = 'toplevel_page_myplugin_myplugin-admin';
-	            $menu_pages[2] = 'admin_page_wnm_fund_set';*/
+	            $menu_pages[1] = 'ticket-system_page_ticket-file-shared';
+	            // $menu_pages[1] = 'ticket-system_page_ticket-file-shared';
+	            $menu_pages[2] = 'ticket-system_page_ticket-file-sharing';
 	            foreach($menu_pages as $menu_slug){
 	                 if ( $menu_slug == $hook ) {
-	                    wp_enqueue_style( 'bootstrap-admin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+        				wp_enqueue_script( 'bootstrap-js-admin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js','','',true);
+	                    wp_enqueue_style( 'bootstrap-admin', 'http://localhost/Saqib/evangelist/wp-content/plugins/wordpress-general-api/assets/css/bootstrap.css');
+   						wp_enqueue_style( 'datatable', 'https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css');
+
+						wp_enqueue_script( 'datatable-js', 'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js','','',true);
+
 	                 }
 	            }
 		/* wp_enqueue_style('admin-css','https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css');*/
@@ -55,10 +63,12 @@ class Enqueue extends BaseController{
 
 		$pages = array(
 	        0 => 'ticket-system-create-ticket',
-	        1 => 'ticket-sytem-dashboard',
-	        2 => 'ticket-sytem-login',
+	        1 => 'ticket-system-dashboard',
+	        2 => 'ticket-system-login',
 	        3 => 'ticket-system-register',
-	        4 => 'ticket-system-view-ticket'
+	        4 => 'ticket-system-view-ticket',
+	        5 => 'ticket-system-files'
+
 	    );
         foreach ($pages as $index => $page_slug) {
         if (is_page($pages[$index])) {
