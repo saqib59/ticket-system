@@ -12,6 +12,8 @@ class Enqueue extends BaseController{
 	public function register(){
 		add_action('admin_enqueue_scripts',array($this, 'enqueue'));
 		add_action('wp_enqueue_scripts',array($this, 'ticket_system_scripts'));
+		add_action('parent_file',array($this, 'menu_highlight'));
+     
 		add_action('init',
 		    function ( ) {
 		        Activate::registerCustomPostType();
@@ -46,7 +48,9 @@ class Enqueue extends BaseController{
 	            foreach($menu_pages as $menu_slug){
 	                 if ( $menu_slug == $hook ) {
         				wp_enqueue_script( 'bootstrap-js-admin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js','','',true);
-	                    wp_enqueue_style( 'bootstrap-admin', 'http://localhost/Saqib/evangelist/wp-content/plugins/wordpress-general-api/assets/css/bootstrap.css');
+	                    /*wp_enqueue_style( 'bootstrap-admin', 'http://localhost/Saqib/evangelist/wp-content/plugins/wordpress-general-api/assets/css/bootstrap.css');*/
+        				wp_enqueue_style('bootstrap-admin',$this->plugin_url.'/assets/css/bootstrap.css');
+
    						wp_enqueue_style( 'datatable', 'https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css');
 
 						wp_enqueue_script( 'datatable-js', 'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js','','',true);
@@ -83,5 +87,16 @@ class Enqueue extends BaseController{
     }
 
    }
+      function menu_highlight( $parent_file ) {
+        global $current_screen;
+
+        $taxonomy = $current_screen->taxonomy;
+        if ( $taxonomy == 'status' ) {
+            $parent_file = 'my_plugin';
+        }
+
+        return $parent_file;
+    }
+
 }
 ?>
