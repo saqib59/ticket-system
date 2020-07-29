@@ -1,6 +1,6 @@
 <?php
 /**
- * @package user_ticket_system
+ * @package ticket_system_custom
  * @version 1.0
  *
 */
@@ -82,15 +82,7 @@ class Admin extends BaseController
 						'callback' 		=> array($this->callbacks, 'adminToUserShareFiles'),
 						'position'		=> 3,
 				),
-					/*array(
-						'parent_slug'	=> 'my_plugin', 
-						'page_title'	=> 'Shared Files', 
-						'menu_title'	=> 'Shared Files', 
-						'capability'	=> 'manage_options', 
-						'menu_slug'		=> 'ticket-file-shared', 
-						'callback' 		=> array($this->callbacks, 'adminSharedFiles'),
-						'position'		=> 4,
-				),*/
+			
 			); 
 	}
 	public function setFrontEndPages(){
@@ -143,18 +135,33 @@ class Admin extends BaseController
 					'post_author'	=> '1',
 					'post_type'		=>'page',
 			),
+				array(
+					'post_title'	=>'Ticket System Messaging', 
+					'post_name'		=>'ticket-system-msg-board', 
+					'post_content'	=>'[ticket_system_messaging]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
 
-				
-				
 		);
 	}
 	public function setSettings(){
 		$args	 = array(
 					array(
-						'option_group'	=> 'ticket_options_group', 
-						'option_name'	=> 'text_name', 
-						'callback'		=> array($this->callbacks, 'ticketOptionsGroup'),
+						'option_group'	=> 'ticket_system_settings', 
+						'option_name'	=> 'chat_manager', 
+						'callback'		=> array($this->callbacks, 'isActiveFunctionality'),
 				),
+					array(
+						'option_group'	=> 'ticket_system_settings', 
+						'option_name'	=> 'file_manager', 
+						'callback'		=> array($this->callbacks, 'isActiveFunctionality'),
+				),
+				// 	array(
+				// 		'option_group'	=> 'ticket_system_settings', 
+				// 		'option_name'	=> 'text_name', 
+				// ),
 			); 
 		$this->settings->setSettings($args);
 
@@ -163,8 +170,8 @@ class Admin extends BaseController
 		$args	 = array(
 					array(
 						'id'			=> 'ticket_admin_index', 
-						'title'			=> 'Settings', 
-						'callback'		=> array($this->callbacks, 'ticketAdminSection'),
+						'title'			=> 'Settings Manager', 
+						'callback'		=> array($this->callbacks, 'adminSectionManager'),
 						'page'			=> 'my_plugin',
 
 				),
@@ -175,14 +182,26 @@ class Admin extends BaseController
 	public function setFields(){
 		$args	 = array(
 					array(
-						'id'			=> 'text_name', 
-						'title'			=> 'Text Example', 
-						'callback'		=> array($this->callbacks, 'ticketTextExample'),
+						'id'			=> 'chat_manager', 
+						'title'			=> 'Activate Chat', 
+						'callback'		=> array($this->callbacks, 'checkboxField'),
 						'page'			=> 'my_plugin',
 						'section'		=> 'ticket_admin_index',
 						'args'			=> array(
-							'label_for' => 'text_example',
-							'class' 	=> 'example-class'
+							'label_for' => 'chat_manager',
+							'class' 	=> 'ticket-toggle'
+						),
+
+				),
+					array(
+						'id'			=> 'file_manager', 
+						'title'			=> 'Activate File Sharing', 
+						'callback'		=> array($this->callbacks, 'checkboxField'),
+						'page'			=> 'my_plugin',
+						'section'		=> 'ticket_admin_index',
+						'args'			=> array(
+							'label_for' => 'file_manager',
+							'class' 	=> 'ticket-toggle'
 						),
 
 				),

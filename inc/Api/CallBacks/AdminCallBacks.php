@@ -9,6 +9,7 @@ namespace Inc\Api\CallBacks;
 use Inc\Base\BaseController;
 
 class AdminCallBacks extends BaseController{
+
 	public function adminDashboard(){
 		return require_once("$this->plugin_path/templates/admin.php");
 	}
@@ -31,4 +32,21 @@ class AdminCallBacks extends BaseController{
 	public function adminToUserShareFiles(){
 		return require_once("$this->plugin_path/templates/Admin/adminToUserShareFiles.php");
 	}
+	public function isActiveFunctionality($input){
+		return filter_var($input, FILTER_SANITIZE_NUMBER_INT);
+		return (isset($input)? true :false );
+	}
+	public function adminSectionManager($input){
+		echo "";
+	}
+
+	public function checkboxField($args){
+		$name = $args['label_for'];
+		$class = $args['class'];
+		$checkbox = get_option($name);
+		echo '<label class="'.$class. '"><input type="checkbox" name="'.$name. '" value="1" id="'.$name. '" '.($checkbox ? 'checked' : '').' >
+		<span class="slider round"></span>
+			</label>';
+	}
+	
 }

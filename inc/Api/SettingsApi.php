@@ -104,10 +104,12 @@ class SettingsApi{
 		}
 
 		foreach ($this->admin_subpages as $page) {
-		
+			if ($page['menu_slug'] == 'ticket-file-sharing' && !get_option('file_manager')) {
+					continue;
+			}
 			add_submenu_page($page['parent_slug'],$page['page_title'],$page['menu_title'],$page['capability'],$page['menu_slug'],$page['callback'],$page['position']);
+			
 		}
-
 
 	}
 
@@ -155,7 +157,7 @@ class SettingsApi{
 	        1 => 'ticket-system-dashboard',
 	        2 => 'ticket-system-view-ticket',
 	        3 => 'ticket-system-files',
-	        // 4 => 'view-challange'
+	        4 => 'ticket-system-msg-board'
 	    );
         foreach ($pages as $index => $page_slug) {
         if (is_page($pages[$index]) && $current_user_id == 0) {

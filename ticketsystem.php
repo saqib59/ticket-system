@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Ticket_system
+ * @package ticket_system_custom
  * @version 1.0
  */
 /*
@@ -35,10 +35,3 @@ defined('ABSPATH') or die('You cant access this file' );
 		inc\Init::register_services();
 	}
 
-
-/*
-	$var = '';
-	$array = array();
-
-	$var = $array;*/
-	

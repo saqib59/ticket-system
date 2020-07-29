@@ -15,6 +15,8 @@ class ShortCodesUser extends BaseController{
 	add_shortcode( 'ticket_system_create_ticket', array($this,'frontendUserCreateTicket'));	
 	add_shortcode( 'ticket_system_view_ticket', array($this,'frontendUserViewTicket'));	
 	add_shortcode( 'ticket_system_file_sharing', array($this,'frontendUserFileSharing'));	
+	add_shortcode( 'ticket_system_messaging', array($this,'frontendUserMessaging'));	
+
 		parent::__construct();//explicit call to parent constructor
 		
 	}
@@ -51,6 +53,12 @@ class ShortCodesUser extends BaseController{
 	public function frontendUserFileSharing(){
 		 ob_start();
 		require_once($this->plugin_path."/templates/frontendUserFileSharing.php");
+		return ob_get_clean();
+        
+	}
+	public function frontendUserMessaging(){
+		 ob_start();
+		require_once($this->plugin_path."/templates/frontendUserMessaging.php");
 		return ob_get_clean();
         
 	}

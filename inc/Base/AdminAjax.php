@@ -17,6 +17,9 @@ class AdminAjax extends MainAjax{
         //delete_service_from_admin
         add_action('wp_ajax_delete_file_from_admin', array($this,'ticketSystemDeleteFiles'));
         add_action('wp_ajax_nopriv_delete_file_from_admin', array($this,'ticketSystemDeleteFiles'));
+        //delete_service_from_admin
+        add_action('wp_ajax_delete_service_from_admin', array($this,'ticketSystemDeleteService'));
+        add_action('wp_ajax_nopriv_delete_service_from_admin', array($this,'ticketSystemDeleteService'));
 	}
 
     function ticketSystemAddService(){
@@ -192,6 +195,29 @@ class AdminAjax extends MainAjax{
             );
              $response = array(
                         "message" =>"File Deleted!",
+                        "error" => false
+                    );
+        }
+            return $this->responseJson($response);
+
+    }
+
+    function ticketSystemDeleteService(){
+           global $wpdb;
+        if (empty($_POST['service_id'])) {
+                    $response = array(
+                        "message" =>"Service Does not exists",
+                        "error" => true
+                    );
+        }
+        else{
+            $wpdb->query(
+                  "DELETE  FROM ".$wpdb->prefix."ticket_services
+                   WHERE ID = ".$_POST['service_id'].""
+            );
+            
+             $response = array(
+                        "message" =>"Service Deleted!",
                         "error" => false
                     );
         }

@@ -1,10 +1,7 @@
 (function($){
    $('#myTable2').DataTable();
 	 $('#myTable3').DataTable();
-       /* $("input[id*='in-popular-status']").click(function(){
-            var status = $(this).val();
-            $("input[id=acf-field_5e989541af11d]").val(status);
-        });*/
+      
 	 $("#add_service").submit(function(){
     	event.preventDefault();
     	var serialize_form = $(this).serialize();

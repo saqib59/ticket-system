@@ -1,6 +1,6 @@
 
 <div class="container-wrap">
-	<div class='container-abc'>
+	<div class='container'>
 		<div class="row">
 			
 		</div><!--/row-->
