@@ -32,6 +32,7 @@ if ($current_user->roles[0] == 'ticket-system-user') {
 	<?php
 		}
 		?>
+	<li><a href="<?= wp_logout_url( home_url().'/ticket-system-login' ); ?>"><i class="fa fa-file" aria-hidden="true"></i>Logout</a></li>
 	
 			</ul>
 		</div>
@@ -56,6 +57,7 @@ if ($current_user->roles[0] == 'ticket-system-user') {
 	<?php
 		}
 		?>
+	<li><a href="<?= wp_logout_url( home_url().'/ticket-system-login' ); ?>"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a></li>
 			</ul>
 		</div>
 		<?php

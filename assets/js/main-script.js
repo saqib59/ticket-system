@@ -337,5 +337,45 @@
 
       }
     });
+
+     $("#forget_pass_form").submit(function(event){
+      event.preventDefault();
+      $(this).validate();
+      var valid = $(this).valid();
+      if (valid) {
+        $("#forgot_mail").append('<i class="fa fa-circle-o-notch fa-spin" style="font-size:20px"></i>');
+        $("#forgot_mail").prop("disabled",true);
+        var serialize_form = $(this).serialize();
+         $.ajax({
+          type: 'POST',
+          url: the_ajax_script.ajaxurl,
+          data: serialize_form,
+          dataType: 'json',
+          success: function (response) {
+            $("#forgot_mail").children().remove();
+            $("#forgot_mail").prop("disabled",false);
+            console.log(response);
+            var error = response.error;
+            if (error) { 
+               Swal.fire({
+                    icon: 'error',
+                    text: response.message,
+                    })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    text: response.message,
+                    }).then((result)=>{
+                });
+            }
+          },
+          error: function (errorThrown) {
+            console.log(errorThrown);
+          }
+        });
+
+      }
+    });
+
 })(jQuery);
 

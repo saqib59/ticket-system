@@ -96,6 +96,14 @@ class Admin extends BaseController
 					'post_type'		=>'page',
 			),
 				array(
+					'post_title'	=>'Ticket System Forgot Password', 
+					'post_name'		=>'ticket-system-forgot-pwd', 
+					'post_content'	=>'[ticket_system_forgot_password]', 
+					'post_status'	=>'publish' ,
+					'post_author'	=> '1',
+					'post_type'		=>'page',
+			),
+				array(
 					'post_title'	=>'Ticket System Register', 
 					'post_name'		=>'ticket-system-register', 
 					'post_content'	=>'[ticket_system_register]', 
@@ -142,7 +150,7 @@ class Admin extends BaseController
 					'post_status'	=>'publish' ,
 					'post_author'	=> '1',
 					'post_type'		=>'page',
-			),
+			)
 
 		);
 	}

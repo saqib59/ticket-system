@@ -23,6 +23,9 @@ class MainAjax {
 		//files-to-admin
 		add_action('wp_ajax_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
 		add_action('wp_ajax_nopriv_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
+        //forgot_password
+        add_action('wp_ajax_forgot_password', array($this,'ticketSystemForgotPswd'));
+        add_action('wp_ajax_nopriv_forgot_password', array($this,'ticketSystemForgotPswd'));
 	}
 
 	function ticketSystemUserRegister(){
@@ -65,6 +68,7 @@ class MainAjax {
 	    }
 	        return $this->responseJson($response);
 	}
+
 
 	function ticketSystemUserlogin(){
 		$user_system_email = $_POST['user_name'];
@@ -153,6 +157,26 @@ class MainAjax {
 
     	return $this->responseJson($err);
 	}
+    function ticketSystemForgotPswd(){
+        $email = $_POST['email'];
+        //check if the email is not in use yet
+        $user_id = email_exists($email);
+        if ($user_id) {
+            $random_password = wp_generate_password(16);
+            wp_set_password( $random_password, $user_id );
+
+            $this->dtc_send_password_reset_mail($user_id);
+
+            $err['message']  = "Check your mail to get/set password";
+            $err['error'] = false;
+
+        }
+        else{
+            $err['message']  = "User with this email doesn't exists";
+            $err['error'] = true;
+        }
+        return $this->responseJson($err);
+    }
 	function ticketSystemCreateTicket(){
 		if ( !empty($_POST['full_name'] ) ) {
          $post = array(
@@ -351,6 +375,32 @@ class MainAjax {
         }
      		return $this->responseJson($err);               
 	}
+
+    function dtc_send_password_reset_mail($user_id){
+
+        $user = get_user_by('id', $user_id);
+        $firstname = $user->first_name;
+        $email = $user->user_email;
+        $adt_rp_key = get_password_reset_key( $user );
+        $user_login = $user->user_login;
+        $rp_link = '<a href="' . wp_login_url()."/resetpass/?key=$adt_rp_key&login=" . rawurlencode($user_login) . '">' . wp_login_url()."/resetpass/?key=$adt_rp_key&login=" . rawurlencode($user_login) . '</a>';
+
+        if ($firstname == "") $firstname = "User";
+        $message = "Hi ".$firstname.",<br>";
+        $message .= "An account has been created on ".get_bloginfo( 'name' )." for email address ".$email."<br>";
+        $message .= "Click here to set the password for your account: <br>";
+        $message .= $rp_link.'<br>';
+
+       $subject = __("Your account on ".get_bloginfo( 'name'));
+       $headers = array();
+
+       add_filter( 'wp_mail_content_type', function( $content_type ) {return 'text/html';});
+       // $headers[] = 'From: Your company name <info@your-domain.com>'."\r\n";
+       wp_mail( $email, $subject, $message, $headers);
+
+       // Reset content-type to avoid conflicts -- http://core.trac.wordpress.org/ticket/23578
+       remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
+    }
 
 	function responseJson($data){
 		header('Content-Type: application/json');

@@ -1,8 +1,3 @@
-<?php 
-// if($current_user->ID == 0)
-// { 
-?>
-
 <div class="container-wrap">
 	<div class='container'>
 		<div class="row">
@@ -24,8 +19,8 @@
                 <input type="checkbox">
                 <span class="checkmark"></span>
             </label>
-			<!-- <a href="#" class="forgot">Forgot Password?</a>
-			<div class="clearfix"></div> -->
+			<a href="<?= home_url().'/ticket-system-forgot-pwd'; ?>" class="forgot">Forgot Password?</a>
+			<div class="clearfix"></div>
 		</div>
 		<button type="submit" class="button-submit" id="login-user">Login</button>
 		<p>Don’t Have an Account? <a href=<?= home_url().'/ticket-system-register'; ?>>Register</a></p>
@@ -34,9 +29,3 @@
 		</div><!--/row-->	
 	</div>
 </div><!--/container-wrap-->
-<?php
-/*}
-else{
-	wp_redirect(home_url());
-}*/
- ?>

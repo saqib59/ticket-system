@@ -71,8 +71,8 @@ class Enqueue extends BaseController{
 	        3 => 'ticket-system-register',
 	        4 => 'ticket-system-view-ticket',
 	        5 => 'ticket-system-files',
-	        6 => 'ticket-system-msg-board'
-
+	        6 => 'ticket-system-msg-board',
+	        7 => 'ticket-system-forgot-pwd'
 	    );
         foreach ($pages as $index => $page_slug) {
         if (is_page($pages[$index])) {

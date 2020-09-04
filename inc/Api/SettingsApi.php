@@ -169,7 +169,8 @@ class SettingsApi{
   		 $current_user_id = get_current_user_id();
 	    $pages = array(
 	        0 => 'ticket-system-register',
-	        1 => 'ticket-system-login'
+	        1 => 'ticket-system-login',
+	        2 => 'ticket-system-forgot-pwd'
 	    );
         foreach ($pages as $index => $page_slug) {
         if (is_page($pages[$index]) && $current_user_id != 0) {
