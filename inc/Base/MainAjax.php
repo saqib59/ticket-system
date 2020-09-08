@@ -7,98 +7,98 @@ namespace Inc\Base;
 use Inc\Base\BaseController;
 
 class MainAjax {
-	function __construct(){
-		//register user
-		add_action('wp_ajax_daily_user_registration_form', array($this,'ticketSystemUserRegister'));
-		add_action('wp_ajax_nopriv_daily_user_registration_form', array($this,'ticketSystemUserRegister'));
-		//login user
-		add_action('wp_ajax_user_login', array($this,'ticketSystemUserlogin'));
-		add_action('wp_ajax_nopriv_user_login', array($this,'ticketSystemUserlogin'));
-		//create ticket
-		add_action('wp_ajax_create_ticket', array($this,'ticketSystemCreateTicket'));
-		add_action('wp_ajax_nopriv_create_ticket', array($this,'ticketSystemCreateTicket'));
-		//close_ticket
-		add_action('wp_ajax_close_ticket', array($this,'ticketSystemCloseTicket'));
-		add_action('wp_ajax_nopriv_close_ticket', array($this,'ticketSystemCloseTicket'));
-		//files-to-admin
-		add_action('wp_ajax_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
-		add_action('wp_ajax_nopriv_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
+    function __construct(){
+        //register user
+        add_action('wp_ajax_daily_user_registration_form', array($this,'ticketSystemUserRegister'));
+        add_action('wp_ajax_nopriv_daily_user_registration_form', array($this,'ticketSystemUserRegister'));
+        //login user
+        add_action('wp_ajax_user_login', array($this,'ticketSystemUserlogin'));
+        add_action('wp_ajax_nopriv_user_login', array($this,'ticketSystemUserlogin'));
+        //create ticket
+        add_action('wp_ajax_create_ticket', array($this,'ticketSystemCreateTicket'));
+        add_action('wp_ajax_nopriv_create_ticket', array($this,'ticketSystemCreateTicket'));
+        //close_ticket
+        add_action('wp_ajax_close_ticket', array($this,'ticketSystemCloseTicket'));
+        add_action('wp_ajax_nopriv_close_ticket', array($this,'ticketSystemCloseTicket'));
+        //files-to-admin
+        add_action('wp_ajax_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
+        add_action('wp_ajax_nopriv_send_files_to_admin', array($this,'ticketSystemSendToAdmin'));
         //forgot_password
         add_action('wp_ajax_forgot_password', array($this,'ticketSystemForgotPswd'));
         add_action('wp_ajax_nopriv_forgot_password', array($this,'ticketSystemForgotPswd'));
-	}
+    }
 
-	function ticketSystemUserRegister(){
-			 if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['pass'])) {
+    function ticketSystemUserRegister(){
+             if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['pass'])) {
          $response = array(
                     "message" =>"Fill out all required fields",
                     "error" => true
                 );
-    	}
-	    if (email_exists(trim($_POST['email']))) {
-	        $response = array(
-	                    "message" =>"The E-mail , you enetered is already registered, Try another one.",
-	                    "error" => true
-	                );
-	    }
-	    if (username_exists(trim($_POST['user_name']))) {
-	        $response = array(
-	                    "message" =>"Username , you enetered is already registered, Try another one.",
-	                    "error" => true
-	                );
-	    }
-	    else{
-	            /** FORM REGISTRATION  **/
-	            $user_name =    trim($_POST['user_name']);
-	            $user_email =    trim($_POST['email']);    
-	            $user_password =    trim($_POST['pass']);   
-	            $userdata = array(
-	            'user_login' => $_POST['user_name'],
-	            'user_pass' => $_POST['pass'], // When creating a new user, `user_pass` is expected.
-	            'user_email' => $_POST['email'],
-	            'role' => 'ticket-system-user'
-	        );
-	        $user_id  = wp_insert_user($userdata);
-	        $response = array(
-	                    "message" =>"User registered",
-	                    "redirect_url" => home_url().'/ticket-system-login', 
-	                    "error" => false
-	                );
-	       
-	    }
-	        return $this->responseJson($response);
-	}
+        }
+        if (email_exists(trim($_POST['email']))) {
+            $response = array(
+                        "message" =>"The E-mail , you enetered is already registered, Try another one.",
+                        "error" => true
+                    );
+        }
+        if (username_exists(trim($_POST['user_name']))) {
+            $response = array(
+                        "message" =>"Username , you enetered is already registered, Try another one.",
+                        "error" => true
+                    );
+        }
+        else{
+                /** FORM REGISTRATION  **/
+                $user_name =    trim($_POST['user_name']);
+                $user_email =    trim($_POST['email']);    
+                $user_password =    trim($_POST['pass']);   
+                $userdata = array(
+                'user_login' => $_POST['user_name'],
+                'user_pass' => $_POST['pass'], // When creating a new user, `user_pass` is expected.
+                'user_email' => $_POST['email'],
+                'role' => 'ticket-system-user'
+            );
+            $user_id  = wp_insert_user($userdata);
+            $response = array(
+                        "message" =>"User registered",
+                        "redirect_url" => home_url().'/ticket-system-login', 
+                        "error" => false
+                    );
+           
+        }
+            return $this->responseJson($response);
+    }
 
 
-	function ticketSystemUserlogin(){
-		$user_system_email = $_POST['user_name'];
-    	$user_system_password = $_POST['pass'];
+    function ticketSystemUserlogin(){
+        $user_system_email = $_POST['user_name'];
+        $user_system_password = $_POST['pass'];
 
-	    if (empty($user_system_email)) {
-	        $emailErr      = "Email/User Login is required";
-	        $err['error']  = $emailErr;
-	        $err['status'] = false;
-	    } 
-	    else {
-	        $user_system_email = $this->ticketSystemTestInput($user_system_email);
-	        // check if e-mail address is well-formed
-	        if (!filter_var($user_system_email, FILTER_VALIDATE_EMAIL)) {
-	            // it's not a email
-	            $userlogin_emailStatus = true;
-	        } else {
-	            // it's not a login
-	            $userlogin_emailStatus = false;
-	        }
-	    }
+        if (empty($user_system_email)) {
+            $emailErr      = "Email/User Login is required";
+            $err['error']  = $emailErr;
+            $err['status'] = false;
+        } 
+        else {
+            $user_system_email = $this->ticketSystemTestInput($user_system_email);
+            // check if e-mail address is well-formed
+            if (!filter_var($user_system_email, FILTER_VALIDATE_EMAIL)) {
+                // it's not a email
+                $userlogin_emailStatus = true;
+            } else {
+                // it's not a login
+                $userlogin_emailStatus = false;
+            }
+        }
 
-	    //password
-	    if (empty($user_system_password)) {
-	        $passwordErr   = "Password is required";
-	        $err['error']  = $passwordErr;
-	        $err['status'] = false;
-	    } else {
-	        $user_system_password = $this->ticketSystemTestInput($user_system_password);
-	    }
+        //password
+        if (empty($user_system_password)) {
+            $passwordErr   = "Password is required";
+            $err['error']  = $passwordErr;
+            $err['status'] = false;
+        } else {
+            $user_system_password = $this->ticketSystemTestInput($user_system_password);
+        }
 
     //REMEMBER ME
     if (isset($_POST['user_system_remember'])) {
@@ -147,27 +147,26 @@ class MainAjax {
         $emailErr      = "User with this email doesn't exists";
         $err['error']  = $emailErr;
         $err['status'] = false;
- 	   }
-	}
+       }
+    }
     else{
         $emailErr      = "User with this email doesn't exists";
         $err['error']  = $emailErr;
         $err['status'] = false;
     }
 
-    	return $this->responseJson($err);
-	}
+        return $this->responseJson($err);
+    }
     function ticketSystemForgotPswd(){
         $email = $_POST['email'];
         //check if the email is not in use yet
         $user_id = email_exists($email);
         if ($user_id) {
-            $random_password = wp_generate_password(16);
-            wp_set_password( $random_password, $user_id );
+            // $random_password = wp_generate_password(16);
 
             $this->dtc_send_password_reset_mail($user_id);
 
-            $err['message']  = "Check your mail to get/set password";
+            $err['message']  = "New Password has been sent to your email";
             $err['error'] = false;
 
         }
@@ -177,8 +176,8 @@ class MainAjax {
         }
         return $this->responseJson($err);
     }
-	function ticketSystemCreateTicket(){
-		if ( !empty($_POST['full_name'] ) ) {
+    function ticketSystemCreateTicket(){
+        if ( !empty($_POST['full_name'] ) ) {
          $post = array(
             'post_status'       => "publish",
             'post_title'        =>  $_POST['ticket_title'],
@@ -211,57 +210,57 @@ class MainAjax {
             "error" => false
         );
     }
-	    else{
-	        $response = array(
-	            "message" =>'Oops! Something Missing',
-	            "error" => true
-	        );
-	    }
+        else{
+            $response = array(
+                "message" =>'Oops! Something Missing',
+                "error" => true
+            );
+        }
         return $this->responseJson($response);
 
-	}
-	function ticketSystemCloseTicket(){
+    }
+    function ticketSystemCloseTicket(){
 
-		 	$ticket_id = $_POST['tck_id'];
-    		$post_type = get_post_type($ticket_id);
-        		if ( $post_type == 'tickets') {
-				    $status = wp_get_post_terms($ticket_id,'status', array('fields' => 'all' ) );
-				    
-				    if ($status[0]->name == 'Closed') {
-				          $response = array(
-				            "message"   =>'Ticket Already Closed',
-				            "error"     => true
-				        );
-				    }
-				    else{
-				    	$terms = get_terms([
-							    'taxonomy' => 'status',
-							    'hide_empty' => false,
-								]);
-				    	 foreach ($terms as $term) {
-					    	if ($term->name == 'Closed' || $term->name == 'closed') {
-				         			wp_set_post_terms( $ticket_id, array($term->term_id), 'status');
-					    	}
-						}
-				         update_post_meta($ticket_id,'_mcf_tech_comments_custom',$_POST['comments_by_technician']);
-				          $response = array(
-				            "message"   =>'Ticket Closed Successfully!',
-				            "error"     => false
-				        );
-				          
-				    }
-			}
-    	else{
+            $ticket_id = $_POST['tck_id'];
+            $post_type = get_post_type($ticket_id);
+                if ( $post_type == 'tickets') {
+                    $status = wp_get_post_terms($ticket_id,'status', array('fields' => 'all' ) );
+                    
+                    if ($status[0]->name == 'Closed') {
+                          $response = array(
+                            "message"   =>'Ticket Already Closed',
+                            "error"     => true
+                        );
+                    }
+                    else{
+                        $terms = get_terms([
+                                'taxonomy' => 'status',
+                                'hide_empty' => false,
+                                ]);
+                         foreach ($terms as $term) {
+                            if ($term->name == 'Closed' || $term->name == 'closed') {
+                                    wp_set_post_terms( $ticket_id, array($term->term_id), 'status');
+                            }
+                        }
+                         update_post_meta($ticket_id,'_mcf_tech_comments_custom',$_POST['comments_by_technician']);
+                          $response = array(
+                            "message"   =>'Ticket Closed Successfully!',
+                            "error"     => false
+                        );
+                          
+                    }
+            }
+        else{
                 $response = array(
                 "message"   =>'Ticket Does Not Exist!',
                 "error"     => true
             );
-    	}
+        }
             return $this->responseJson($response);
-	}
+    }
 
-	function ticketSystemSendToAdmin(){
-		date_default_timezone_set("America/New_York");
+    function ticketSystemSendToAdmin(){
+        date_default_timezone_set("America/New_York");
         $selected_users = 1;
         $user_ids =  explode(",",$selected_users);  // string to array
         //$errors = 0;
@@ -373,27 +372,30 @@ class MainAjax {
             $err['error']  = true;
             
         }
-     		return $this->responseJson($err);               
-	}
+            return $this->responseJson($err);               
+    }
 
     function dtc_send_password_reset_mail($user_id){
 
         $user = get_user_by('id', $user_id);
         $firstname = $user->first_name;
         $email = $user->user_email;
-        $adt_rp_key = get_password_reset_key( $user );
         $user_login = $user->user_login;
-        $rp_link = '<a href="' . wp_login_url()."/resetpass/?key=$adt_rp_key&login=" . rawurlencode($user_login) . '">' . wp_login_url()."/resetpass/?key=$adt_rp_key&login=" . rawurlencode($user_login) . '</a>';
+
+        $random_password = $user_login.'!@#^%34';
+        wp_set_password( $random_password, $user_id );
+
+        $rp_link= "<a href=".home_url()."/ticket-system-login>Here</a>";
+
 
         if ($firstname == "") $firstname = "User";
         $message = "Hi ".$firstname.",<br>";
         $message .= "An account has been created on ".get_bloginfo( 'name' )." for email address ".$email."<br>";
-        $message .= "Click here to reset the password for your account: <br>";
-        $message .= $rp_link.'<br>';
+        $message .= "Your New Password Is ".$random_password ." Click ".$rp_link." to login";
+        $message .= '<br>';
 
        $subject = __("Your account on ".get_bloginfo( 'name'));
        $headers = array();
-
        add_filter( 'wp_mail_content_type', function( $content_type ) {return 'text/html';});
        // $headers[] = 'From: Your company name <info@your-domain.com>'."\r\n";
        wp_mail( $email, $subject, $message, $headers);
@@ -402,15 +404,15 @@ class MainAjax {
        remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
     }
 
-	function responseJson($data){
-		header('Content-Type: application/json');
-	    echo json_encode($data);
-	    wp_die();
-	}
-	function ticketSystemTestInput($data){
-		$data = trim($data);
-	    $data = stripslashes($data);
-	    $data = htmlspecialchars($data);
-	    return $data;
-	}
+    function responseJson($data){
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        wp_die();
+    }
+    function ticketSystemTestInput($data){
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 }
