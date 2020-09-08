@@ -388,7 +388,7 @@ class MainAjax {
         if ($firstname == "") $firstname = "User";
         $message = "Hi ".$firstname.",<br>";
         $message .= "An account has been created on ".get_bloginfo( 'name' )." for email address ".$email."<br>";
-        $message .= "Click here to set the password for your account: <br>";
+        $message .= "Click here to reset the password for your account: <br>";
         $message .= $rp_link.'<br>';
 
        $subject = __("Your account on ".get_bloginfo( 'name'));
